@@ -24,19 +24,25 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
 
     // Navigate to Patients section
     const patientsButton = page.getByRole('button', { name: 'Patients', exact: true });
+    await patientsButton.waitFor({ state: 'visible', timeout: 15000 });
     await patientsButton.click();
 
-    // Wait for patient page to load
+    // Wait for patient page to load and network to settle
     await page.waitForURL('**/doctor/patient', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
   });
 
   test('TC-P01: User should successfully create a patient with mandatory fields only', async ({ page }) => {
     // Arrange - Click on Create Patient button
     const createPatientButton = page.getByRole('button', { name: 'Create Patient' });
+    await createPatientButton.waitFor({ state: 'visible', timeout: 15000 });
     await createPatientButton.click();
 
-    // Wait for the create patient form to load
+    // Wait for the create patient form to load and settle
     await page.waitForURL('**/doctor/patient/add', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(800);
 
     // Generate unique patient data using timestamp
     const timestamp = Date.now();
@@ -51,28 +57,37 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
     // Act - Fill in mandatory fields
     // Name field
     const nameField = page.getByRole('textbox', { name: 'Patient Name' });
+    await nameField.waitFor({ state: 'visible', timeout: 10000 });
     await nameField.fill(patientName);
+    await page.waitForTimeout(300);
 
     // Age field (Years only, as per requirement - no months, days)
     const yearsField = page.getByRole('textbox', { name: 'Years' });
+    await yearsField.waitFor({ state: 'visible', timeout: 10000 });
     await yearsField.fill(patientAge);
+    await page.waitForTimeout(300);
 
     // Phone field
     const phoneField = page.getByRole('textbox', { name: 'e.x: 016********' });
+    await phoneField.waitFor({ state: 'visible', timeout: 10000 });
     await phoneField.fill(patientPhone);
+    await page.waitForTimeout(300);
 
     // Submit the form by scrolling to find and clicking Submit button
     await page.evaluate(() => window.scrollBy(0, 500));
-
     // Wait a moment for potential form validations
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
 
-    // Click Submit button - it should be enabled now that mandatory fields are filled
+    // Click Submit button - wait for it to be enabled then click
     const submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible({ timeout: 5000 });
+    await expect(submitButton).toBeEnabled({ timeout: 5000 }).catch(() => null);
     await submitButton.click();
 
     // Wait for the patient creation to complete and navigate back to patient list
-    await page.waitForURL('**/doctor/patient', { timeout: 15000 });
+    await page.waitForURL('**/doctor/patient', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
 
     // Assert - Verify we're back on the patient list page
     expect(page.url()).toContain('doctor/patient');
@@ -81,10 +96,13 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
   test('TC-P02: Created patient should appear in the patient list with correct details', async ({ page }) => {
     // Arrange - Click on Create Patient button
     const createPatientButton = page.getByRole('button', { name: 'Create Patient' });
+    await createPatientButton.waitFor({ state: 'visible', timeout: 15000 });
     await createPatientButton.click();
 
     // Wait for the create patient form to load
     await page.waitForURL('**/doctor/patient/add', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(800);
 
     // Generate unique patient data
     const timestamp = Date.now();
@@ -98,23 +116,32 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
 
     // Act - Fill in mandatory fields
     const nameField = page.getByRole('textbox', { name: 'Patient Name' });
+    await nameField.waitFor({ state: 'visible', timeout: 10000 });
     await nameField.fill(patientName);
+    await page.waitForTimeout(300);
 
     const yearsField = page.getByRole('textbox', { name: 'Years' });
+    await yearsField.waitFor({ state: 'visible', timeout: 10000 });
     await yearsField.fill(patientAge);
+    await page.waitForTimeout(300);
 
     const phoneField = page.getByRole('textbox', { name: 'e.x: 016********' });
+    await phoneField.waitFor({ state: 'visible', timeout: 10000 });
     await phoneField.fill(patientPhone);
+    await page.waitForTimeout(300);
 
     // Submit the form
     await page.evaluate(() => window.scrollBy(0, 500));
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
 
     const submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible({ timeout: 5000 });
     await submitButton.click();
 
     // Wait for navigation back to patient list
-    await page.waitForURL('**/doctor/patient', { timeout: 15000 });
+    await page.waitForURL('**/doctor/patient', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
 
     // Assert - Verify we're back on the patient list page
     expect(page.url()).toContain('doctor/patient');
@@ -130,30 +157,38 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
 
     // Create first patient
     let createPatientButton = page.getByRole('button', { name: 'Create Patient' });
+    await createPatientButton.waitFor({ state: 'visible', timeout: 15000 });
     await createPatientButton.click();
-
     await page.waitForURL('**/doctor/patient/add', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(800);
 
     let nameField = page.getByRole('textbox', { name: 'Patient Name' });
+    await nameField.waitFor({ state: 'visible', timeout: 10000 });
     await nameField.fill(firstPatientName);
+    await page.waitForTimeout(300);
 
     let yearsField = page.getByRole('textbox', { name: 'Years' });
+    await yearsField.waitFor({ state: 'visible', timeout: 10000 });
     await yearsField.fill('25');
+    await page.waitForTimeout(300);
 
     let phoneField = page.getByRole('textbox', { name: 'e.x: 016********' });
+    await phoneField.waitFor({ state: 'visible', timeout: 10000 });
     await phoneField.fill(firstPatientPhone);
+    await page.waitForTimeout(300);
 
     await page.evaluate(() => window.scrollBy(0, 500));
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
 
     let submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible({ timeout: 5000 });
     await submitButton.click();
 
     // Wait for navigation back to patient list - should show first patient
-    await page.waitForURL('**/doctor/patient', { timeout: 15000 });
-    
-    // Wait for page to fully load and patient to appear
-    await page.waitForTimeout(2000);
+    await page.waitForURL('**/doctor/patient', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1500);
 
     // Assert - Check if we're back on patient list (form was submitted successfully)
     expect(page.url()).toContain('doctor/patient');
@@ -164,9 +199,11 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
   test('TC-P04: Search patient by name and verify the search result', async ({ page }) => {
     // Arrange - Create a patient first
     const createPatientButton = page.getByRole('button', { name: 'Create Patient' });
+    await createPatientButton.waitFor({ state: 'visible', timeout: 15000 });
     await createPatientButton.click();
-
     await page.waitForURL('**/doctor/patient/add', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(800);
 
     const timestamp = Date.now();
     const patientName = `SearchPatient_${timestamp}`;
@@ -175,34 +212,41 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
 
     // Fill in mandatory fields
     const nameField = page.getByRole('textbox', { name: 'Patient Name' });
+    await nameField.waitFor({ state: 'visible', timeout: 10000 });
     await nameField.fill(patientName);
+    await page.waitForTimeout(300);
 
     const yearsField = page.getByRole('textbox', { name: 'Years' });
+    await yearsField.waitFor({ state: 'visible', timeout: 10000 });
     await yearsField.fill(patientAge);
+    await page.waitForTimeout(300);
 
     const phoneField = page.getByRole('textbox', { name: 'e.x: 016********' });
+    await phoneField.waitFor({ state: 'visible', timeout: 10000 });
     await phoneField.fill(patientPhone);
+    await page.waitForTimeout(300);
 
     // Submit the form
     await page.evaluate(() => window.scrollBy(0, 500));
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
 
     const submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible({ timeout: 5000 });
     await submitButton.click();
 
     // Wait for navigation back to patient list
-    await page.waitForURL('**/doctor/patient', { timeout: 15000 });
+    await page.waitForURL('**/doctor/patient', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1200);
 
     // Act - Search for the created patient by name
     const searchField = page.getByRole('textbox', { name: 'search patient' });
+    await searchField.waitFor({ state: 'visible', timeout: 10000 });
     await searchField.fill(patientName);
 
-    // Wait for search results
-    await page.waitForTimeout(1000);
-
-    // Assert - Verify search results contain the patient
-    const searchResults = page.getByRole('list');
-    await expect(searchResults).toBeVisible({ timeout: 5000 });
+    // Wait for search results and assert the specific patient appears
+    const patientRow = page.locator(`text=${patientName}`).first();
+    await expect(patientRow).toBeVisible({ timeout: 8000 });
 
     console.log(`✓ Patient search by name successful: ${patientName}`);
   });
@@ -262,36 +306,49 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
 
     // Create a patient
     const createPatientButton = page.getByRole('button', { name: 'Create Patient' });
+    await createPatientButton.waitFor({ state: 'visible', timeout: 15000 });
     await createPatientButton.click();
-
     await page.waitForURL('**/doctor/patient/add', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(800);
 
     // Fill in mandatory fields
     const nameField = page.getByRole('textbox', { name: 'Patient Name' });
+    await nameField.waitFor({ state: 'visible', timeout: 10000 });
     await nameField.fill(patientName);
+    await page.waitForTimeout(300);
 
     const yearsField = page.getByRole('textbox', { name: 'Years' });
+    await yearsField.waitFor({ state: 'visible', timeout: 10000 });
     await yearsField.fill(patientAge);
+    await page.waitForTimeout(300);
 
     const phoneField = page.getByRole('textbox', { name: 'e.x: 016********' });
+    await phoneField.waitFor({ state: 'visible', timeout: 10000 });
     await phoneField.fill(patientPhone);
+    await page.waitForTimeout(300);
 
     // Submit the form
     await page.evaluate(() => window.scrollBy(0, 500));
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
 
     const submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible({ timeout: 5000 });
     await submitButton.click();
 
     // Wait for navigation back to patient list
-    await page.waitForURL('**/doctor/patient', { timeout: 15000 });
+    await page.waitForURL('**/doctor/patient', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1200);
 
     // Act - Search by partial name
     const searchField = page.getByRole('textbox', { name: 'search patient' });
+    await searchField.waitFor({ state: 'visible', timeout: 10000 });
     await searchField.fill('List');
 
-    // Wait for search results to filter
-    await page.waitForTimeout(1000);
+    // Wait for search results to filter and assert list item visible
+    const listRow = page.locator(`text=${patientName}`).first();
+    await expect(listRow).toBeVisible({ timeout: 8000 });
 
     // Assert - Verify we're still on the patient page with search applied
     expect(page.url()).toContain('doctor/patient');
@@ -310,27 +367,20 @@ test.describe('Digital Rx Pro - Patient Creation Tests', () => {
     
     // Attempt to find RX button - try with longer wait
     const rxButton = page.getByRole('button', { name: 'RX', exact: true });
-    
     try {
-      // Try to wait for it, but with a catch for timeout
-      await Promise.race([
-        rxButton.waitFor({ state: 'visible', timeout: 5000 }),
-        new Promise(resolve => setTimeout(() => resolve(null), 5000))
-      ]);
-      
-      // If button is visible, click it
+      await rxButton.waitFor({ state: 'visible', timeout: 8000 });
       if (await rxButton.isVisible().catch(() => false)) {
         await Promise.all([
-          page.waitForURL('**/doctor/rx', { timeout: 10000 }),
+          page.waitForURL('**/doctor/rx', { timeout: 15000 }),
           rxButton.click()
         ]);
-        
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(800);
+
         // If we successfully navigated to RX page, try to find Add Patient button
         const addPatientButton = page.getByRole('button', { name: /add patient|create patient|add/i });
         if (await addPatientButton.isVisible().catch(() => false)) {
           console.log('✓ Found Add Patient button on RX page');
-          // The actual patient creation from RX page could be tested here
-          // but navigation back from RX page Add Patient form varies
         } else {
           console.log('⚠️ Add Patient button not found on RX page');
         }
