@@ -1,0 +1,72 @@
+{
+  "login": {
+    "username": "doctorusername@gmail.com",
+    "password": "doctorpassword@123",
+    "expectedDoctorName": "Dr. MD Mamun Hasan"
+  },
+  "patient": {
+    "TC-P01": {
+      "name": "Patient One",
+      "age": "25",
+      "phone": "01600000001",
+      "phonePrefix": "01600000"
+    },
+    "TC-P02": {
+      "name": "Patient Two",
+      "age": "30",
+      "phone": "01700000001",
+      "phonePrefix": "01700000"
+    },
+    "TC-P03": {
+      "name": "Patient Three",
+      "age": "35",
+      "phone": "01800000001",
+      "phonePrefix": "01800000"
+    },
+    "TC-P04": {
+      "name": "Patient Four",
+      "age": "40",
+      "phone": "01900000001",
+      "phonePrefix": "01900000"
+    },
+    "TC-P05": {
+      "name": "Patient Five",
+      "age": "45",
+      "phone": "02000000001",
+      "phonePrefix": "02000000"
+    },
+    "TC-P06": {
+      "name": "Patient Six",
+      "age": "50",
+      "phone": "02100000001",
+      "phonePrefix": "02100000"
+    },
+    "TC-P07": {
+      "name": "Patient Seven",
+      "age": "55",
+      "phone": "02200000001",
+      "phonePrefix": "02200000"
+    }
+  },
+  "prescription": {
+    "TC-RX-01": {
+      "patientNamePrefix": "RXPatient",
+      "age": "30",
+      "phonePrefix": "01600000",
+      "chiefComplaint": "General checkup and consultation"
+    }
+  },
+  "urls": {
+    "baseUrl": "http://digital-rx-pro.s3-website-us-east-1.amazonaws.com/",
+    "patientPagePattern": "**/patient/**",
+    "rxPagePattern": "**/doctor/rx",
+    "patientAddPagePattern": "**/patient-add"
+  },
+  "timeouts": {
+    "navigationTimeout": 90000,
+    "clickElementTimeout": 15000,
+    "waitForElementTimeout": 30000,
+    "pageLoadTimeout": 60000,
+    "explicitWaitMs": 1000
+  }
+}
