@@ -1,8 +1,8 @@
 {
   "login": {
-    "username": "doctorusername@gmail.com",
-    "password": "doctorpassword@123",
-    "expectedDoctorName": "Dr. MD Mamun Hasan"
+    "username": "Sadman",
+    "password": "Sadman1#",
+    "expectedDoctorName": "Dr. Sadman Soeb Adib"
   },
   "patient": {
     "TC-P01": {
@@ -54,6 +54,24 @@
       "age": "30",
       "phonePrefix": "01600000",
       "chiefComplaint": "General checkup and consultation"
+    },
+    "TC-RX-02": {
+      "patientNamePrefix": "RXTest02",
+      "age": "28",
+      "phonePrefix": "01700000",
+      "chiefComplaint": "Fever and cough"
+    },
+    "TC-RX-03": {
+      "patientNamePrefix": "RXTest03",
+      "age": "35",
+      "phonePrefix": "01800000",
+      "chiefComplaint": "Headache and fatigue"
+    },
+    "TC-RX-04": {
+      "patientNamePrefix": "RXTest04",
+      "age": "42",
+      "phonePrefix": "01900000",
+      "chiefComplaint": "Back pain"
     }
   },
   "urls": {
