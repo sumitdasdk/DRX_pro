@@ -74,6 +74,16 @@
       "chiefComplaint": "Back pain"
     }
   },
+  "history": {
+    "TC-H01": {
+      "searchPatientName": "Patient One",
+      "expectedRecordsMin": 0
+    },
+    "TC-H02": {
+      "searchPatientName": "RXPatient",
+      "expectedRecordsMin": 0
+    }
+  },
   "urls": {
     "baseUrl": "http://digital-rx-pro.s3-website-us-east-1.amazonaws.com/",
     "patientPagePattern": "**/patient/**",
