@@ -9,19 +9,17 @@ class BasePage:
 
     async def goto(self, url: str):
         """Navigate to a URL"""
-        await self.page.goto(url, wait_until='domcontentloaded', timeout=90000)
+        await self.page.goto(url, wait_until='domcontentloaded', timeout=60000)
 
     async def fill_field(self, locator: Locator, value: str):
         """Fill a text field with value"""
-        await locator.wait_for(state='visible', timeout=10000)
         await locator.fill(value)
 
     async def click_element(self, locator: Locator):
         """Click an element"""
-        await locator.wait_for(state='visible', timeout=15000)
         await locator.click()
 
-    async def wait_for_element(self, locator: Locator, timeout: int = 10000):
+    async def wait_for_element(self, locator: Locator, timeout: int = 5000):
         """Wait for element to be visible"""
         await locator.wait_for(state='visible', timeout=timeout)
 
@@ -37,7 +35,7 @@ class BasePage:
         """Press a keyboard key"""
         await self.page.keyboard.press(key)
 
-    async def wait_for_url(self, url_pattern: str, timeout: int = 30000):
+    async def wait_for_url(self, url_pattern: str, timeout: int = 15000):
         """Wait for URL to match pattern"""
         await self.page.wait_for_url(url_pattern, timeout=timeout)
 

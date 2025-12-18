@@ -11,7 +11,6 @@ class LoginPage(BasePage):
     async def navigate_to_login(self):
         """Navigate to login page"""
         await self.goto('http://digital-rx-pro.s3-website-us-east-1.amazonaws.com/')
-        await self.wait(1000)
 
     async def login(self, username: str, password: str):
         """Perform login with credentials"""
@@ -21,17 +20,16 @@ class LoginPage(BasePage):
 
         await self.fill_field(username_field, username)
         await self.fill_field(password_field, password)
-
-        # Wait for navigation while clicking login
-        async with self.page.expect_navigation(wait_until='domcontentloaded', timeout=90000):
-            await self.click_element(login_button)
-
-        await self.wait(3000)
+        await self.click_element(login_button)
+        await self.page.wait_for_load_state('load', timeout=60000)
 
     async def get_doctor_name(self) -> str:
         """Get doctor name from top right button"""
-        doctor_button = self.page.locator('[class*="user"], [class*="profile"], button').filter(has_text='Dr')
-        return await doctor_button.first.text_content()
+        try:
+            doctor_button = self.page.locator('[class*="user"], [class*="profile"], button').filter(has_text='Dr')
+            return await doctor_button.first.text_content()
+        except:
+            return ""
 
     async def is_logged_in(self) -> bool:
         """Check if user is logged in"""

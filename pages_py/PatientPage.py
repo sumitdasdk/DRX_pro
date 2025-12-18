@@ -11,15 +11,20 @@ class PatientPage(BasePage):
     async def navigate_to_patients(self):
         """Navigate to Patients page"""
         patients_button = self.page.get_by_role('button', name='Patients', exact=True)
-        await self.wait_for_element(patients_button, 15000)
         await self.click_element(patients_button)
-        await self.wait(2000)
+
+    async def is_on_patient_page(self):
+        """Check if on patient page"""
+        try:
+            await self.page.wait_for_url('**/doctor/patient/**', timeout=10000)
+            return True
+        except:
+            return False
 
     async def create_patient(self, name: str, age: str, phone: str):
         """Create a new patient"""
         add_patient_button = self.page.get_by_role('button', name='Add Patient')
         await self.click_element(add_patient_button)
-        await self.wait(500)
 
         name_field = self.page.get_by_role('textbox', name='Patient Name')
         age_field = self.page.get_by_role('textbox', name='Years')
@@ -27,19 +32,14 @@ class PatientPage(BasePage):
         submit_button = self.page.get_by_role('button', name='Submit')
 
         await self.fill_field(name_field, name)
-        await self.wait(300)
         await self.fill_field(age_field, age)
-        await self.wait(200)
         await self.fill_field(phone_field, phone)
-        await self.wait(300)
         await self.click_element(submit_button)
-        await self.wait(1000)
 
     async def search_patient_by_name(self, name: str):
         """Search for patient by name"""
         search_field = self.page.get_by_role('textbox', name='Search')
         await self.fill_field(search_field, name)
-        await self.wait(1000)
 
     async def verify_patient_displayed(self, name: str) -> bool:
         """Verify patient is displayed in list"""
@@ -48,6 +48,7 @@ class PatientPage(BasePage):
             await patient_row.wait_for(state='visible', timeout=5000)
             return True
         except:
+            return False
             return False
 
     async def is_on_patient_page(self) -> bool:
