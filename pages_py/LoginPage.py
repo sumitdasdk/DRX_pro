@@ -3,8 +3,6 @@ from .BasePage import BasePage
 
 
 class LoginPage(BasePage):
-    """LoginPage contains all selectors and methods related to login functionality"""
-
     def __init__(self, page: Page):
         super().__init__(page)
 
@@ -21,7 +19,7 @@ class LoginPage(BasePage):
         await self.fill_field(username_field, username)
         await self.fill_field(password_field, password)
         await self.click_element(login_button)
-        await self.page.wait_for_load_state('load', timeout=60000)
+        await self.page.wait_for_load_state('load')
 
     async def get_doctor_name(self) -> str:
         """Get doctor name from top right button"""

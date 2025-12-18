@@ -11,17 +11,13 @@ from pages_py.TestDataLoader import TestDataLoader
 
 
 class TestPatient:
-    """Patient test cases"""
-
     async def _setup_browser(self):
-        """Setup browser and return page object"""
         p = await async_playwright().start()
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=False)
         page = await browser.new_page()
         return p, browser, page
 
     async def _teardown_browser(self, p, browser):
-        """Cleanup browser"""
         try:
             await browser.close()
         except:

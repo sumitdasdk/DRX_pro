@@ -3,8 +3,6 @@ from .BasePage import BasePage
 
 
 class PatientPage(BasePage):
-    """PatientPage contains all methods related to patient management"""
-
     def __init__(self, page: Page):
         super().__init__(page)
 
@@ -48,6 +46,7 @@ class PatientPage(BasePage):
             await patient_row.wait_for(state='visible', timeout=5000)
             return True
         except:
+            return False
             return False
             return False
 
